@@ -1,0 +1,43 @@
+<h1>Comparing Jobs</h1>
+<p>
+  DJ
+  -- Extracted from Shopify
+Delayed::Job (or DJ) encapsulates the common pattern of asynchronously executing longer tasks in the background.
+
+gem 'delayed_job_active_record'
+gem 'delayed_job_mongoid'
+
+handle_asynchronously and #delay take these parameters:
+* :priority (number): lower numbers run first; default is 0 but can be reconfigured (see below)
+* :run_at (Time): run the job after this time (probably in the future)
+* :queue (string): named queue to put this job in, an alternative to priorities (see below)
+These params can be Proc objects, allowing call-time evaluation of the value.
+
+Notifier.delay(run_at: 5.minutes.from_now).signup(@user)
+object.delay(:queue => 'tracking').method
+Delayed::Job.enqueue job, :queue => 'tracking'
+
+
+RAILS_ENV=production script/delayed_job start
+RAILS_ENV=production script/delayed_job -n 2 start
+</p>
+<p>
+
+
+Sidekiq
+Simple, efficient background processing for Ruby.
+Sidekiq uses threads to handle many jobs at the same time in the same process. It does not require Rails but will integrate tightly with Rails to make background processing dead simple.
+
+Sidekiq is compatible with Resque. It uses the exact same message format as Resque so it can integrate into an existing Resque processing farm. You can have Sidekiq and Resque run side-by-side at the same time and use the Resque client to enqueue jobs in Redis to be processed by Sidekiq.
+</p>
+<p>
+Resque
+Resque is a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later
+
+it comprises three parts:
+1. A Ruby library for creating, querying, and processing jobs
+2. A Rake task for starting a worker which processes jobs
+3. A Sinatra app for monitoring queues, jobs, and workers.
+
+
+</p>
